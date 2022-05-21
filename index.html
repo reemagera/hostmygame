@@ -15,6 +15,209 @@
     <title>Guess My Word</title>
   </head>
   <body>
+    <style>
+                                          * {
+  text-align: center;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #282c34;
+  /* min-height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  width: 100%;
+}
+.letter{
+  border-radius: 5px;
+  width: 75px;
+  height: 75px;
+  /* padding: 1px 1px; */
+  margin: 3px 3px;
+}
+input{
+  background-color: aqua;
+}
+input.letter{
+  font-size: larger;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-transform: uppercase;
+}
+input.letter:valid{
+  text-transform: uppercase;
+}
+.letter:valid{
+  text-transform: uppercase;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+button.submitit{
+  display: none;
+} 
+#root{
+  display: none;
+}
+#play-again{
+  background-color: aliceblue;
+  width: 90px;
+  height: 40px;
+}
+
+a {
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+ul {
+  list-style-type: none;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  height: 10vh;
+  width: 100%;
+}
+
+header .logo {
+  font-size: 1rem;
+  margin: 0rem 1rem;
+}
+
+ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+ul li {
+  margin-right: 1rem;
+}
+
+ul li a {
+  font-size: 1rem;
+  padding: 8px 10px;
+  color: #fff;
+}
+
+ul li a.active,
+ul li a:hover {
+  background-color: grey;
+  transition: 0.5s;
+  border-radius: 4px;
+}
+
+.hamburger {
+  position: absolute;
+  right: 1.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  display: none;
+}
+
+.hamburger .bar {
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  transition: 0.3s all;
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+    background-position: cover;
+  }
+  .hamburger {
+    display: flex;
+    cursor: pointer;
+  }
+
+  ul {
+    flex-direction: column;
+    position: absolute;
+    top: 10vh;
+    right: -100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 86vh;
+    width: 100%;
+    align-items: center;
+    transition: right 0.3s ease-in;
+  }
+
+  ul li {
+    margin-right: 0px;
+  }
+
+  .menu-slide {
+    right: 0%;
+    transition: right 0.3s ease-in;
+  }
+
+  .cross .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .cross .bar:first-child {
+    transform: rotate(-45deg) translate(-5px, 7px);
+  }
+  .cross .bar:last-child {
+    transform: rotate(45deg) translate(-5px, -7px);
+  }
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: darkcyan;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+p{
+  font-size: medium;
+}
+    </style>
     <header>
         <div class="logo">
           <h1>Guess My Word</h1>
@@ -108,5 +311,198 @@
     <h1 id="message"></h1>
     <button id="play-again" disabled>Play again</button>
   </body>
-  <script src="nav.js"></script>
+<!--   <script src="nav.js"></script> -->
+                           <script>
+                           // import { get } from "express/lib/request";
+const hamburger = document.getElementById('hamburger');
+hamburger.addEventListener('click', function(e) {
+    const ul = document.querySelector('nav > ul');
+    ul.classList.toggle('menu-slide');
+    hamburger.classList.toggle('cross');
+});
+function autotab(current, to)
+{
+    if (current.getAttribute && current.value.length==current.getAttribute("maxlength")) 
+    {
+    to.focus();
+    }
+}
+function disableform(form){
+    for(var i=0; i<5;i++){
+    form.children[i].readOnly = true;
+    form.children[i].style.backgroundColor="grey";
+    }
+}
+function enableform(form){
+    for(var i=0;i<5;i++){
+    form.children[i].readOnly = false;
+    form.children[i].style.backgroundColor="aqua";
+    }
+}
+function checkword(form, word){
+    let i=0;
+    let flag=0;
+    for(i=0;i<5;i++){
+    let letter = form.children[i].value;
+    if(letter!=word[i]){
+        if(word.split("").includes(letter)){
+        form.children[i].style.backgroundColor= "yellow";
+        }
+        else{
+        form.children[i].style.backgroundColor="pink";
+        }
+        flag=1;
+    }
+    else{
+        form.children[i].style.backgroundColor="green";
+    }
+    form.children[i].readOnly=true;
+    }
+    let message = "";
+    if(flag){
+        message="please try again";
+    }else{
+        message="You Won!";
+        button.disabled = false;
+    }
+    document.getElementById("message").innerHTML = message;
+    return(!flag);
+}
+function clearform(form){
+    for(var i=0; i<5; i++){
+    form.children[i].value = "";
+    }
+}
+const attempt1 = document.querySelector('#attempt1');
+const attempt2 = document.querySelector('#attempt2');
+const attempt3 = document.querySelector('#attempt3');
+const attempt4 = document.querySelector('#attempt4');
+const attempt5 = document.querySelector('#attempt5');
+let button = document.querySelector("#play-again");
+var points = 0;
+var level = 1;
+document.getElementById("points").innerHTML=points;
+document.getElementById("level").innerHTML = level;
+document.getElementById("stars").innerHTML = 0;
+const data = ['about', 'above', 'abuse', 'actor', 'acute', 'admit', 'adopt', 'adult', 'after', 'again', 'agent', 'agree', 'ahead', 'alarm', 'album', 'alert', 'alike', 'alive', 'allow', 'alone', 'along', 'alter', 'among', 'anger', 'Angle', 'angry', 'apart', 'apple', 'apply', 'arena', 'argue', 'arise', 'array', 'aside', 'asset', 'audio', 'audit', 'avoid', 'award', 'aware', 'badly', 'baker', 'bases', 'basic', 'basis', 'beach', 'began', 'begin', 'begun', 'being', 'below', 'bench', 'billy', 'birth', 'black', 'blame', 'blind', 'block', 'blood', 'board', 'boost', 'booth', 'bound', 'brain', 'brand', 'bread', 'break', 'breed', 'brief', 'bring', 'broad', 'broke', 'brown', 'build', 'built', 'buyer', 'cable', 'calif', 'carry', 'catch', 'cause', 'chain', 'chair', 'chart', 'chase', 'cheap', 'check', 'chest', 'chief', 'child', 'china', 'chose', 'civil', 'claim', 'class', 'clean', 'clear', 'click', 'clock', 'close', 'coach', 'coast', 'could', 'count', 'court', 'cover', 'craft', 'crash', 'cream', 'crime', 'cross', 'crowd', 'crown', 'curve', 'cycle', 'daily', 'dance', 'dated', 'dealt', 'death', 'debut', 'delay', 'depth', 'doing', 'doubt', 'dozen', 'draft', 'drama', 'drawn', 'dream', 'dress', 'drill', 'drink', 'drive', 'drove', 'dying', 'eager', 'early', 'earth', 'eight', 'elite', 'empty', 'enemy', 'enjoy', 'enter', 'entry', 'equal', 'error', 'event', 'every', 'exact', 'exist', 'extra', 'faith', 'false', 'fault', 'fiber', 'field', 'fifth', 'fifty', 'fight', 'final', 'first', 'fixed', 'flash', 'fleet', 'floor', 'fluid', 'focus', 'force', 'forth', 'forty', 'forum', 'found', 'frame', 'frank', 'fraud', 'fresh', 'front', 'fruit', 'fully', 'funny', 'giant', 'given', 'glass', 'globe', 'going', 'grace', 'grade', 'grand', 'grant', 'grass', 'great', 'green', 'gross', 'group', 'grown', 'guard', 'guess', 'guest', 'guide', 'happy', 'harry', 'heart', 'heavy', 'hence', 'henry', 'horse', 'hotel', 'house', 'human', 'ideal', 'image', 'index', 'inner', 'input', 'issue', 'japan', 'jimmy', 'joint', 'jones', 'judge', 'known', 'label', 'large', 'laser', 'later', 'laugh', 'layer', 'learn', 'lease', 'least', 'leave', 'legal', 'level', 'lewis', 'light', 'limit', 'links', 'lives', 'local', 'logic', 'loose', 'lower', 'lucky', 'lunch', 'lying', 'magic', 'major', 'maker', 'march', 'maria', 'match', 'maybe', 'mayor', 'meant', 'media', 'metal', 'might', 'minor', 'minus', 'mixed', 'model', 'money', 'month', 'moral', 'motor', 'mount', 'mouse', 'mouth', 'movie', 'music', 'needs', 'never', 'newly', 'night', 'noise', 'north', 'noted', 'novel', 'nurse', 'occur', 'ocean', 'offer', 'often', 'order', 'other', 'ought', 'paint', 'panel', 'paper', 'party', 'peace', 'peter', 'phase', 'phone', 'photo', 'piece', 'pilot', 'pitch', 'place', 'plain', 'plane', 'plant', 'plate', 'point', 'pound', 'power', 'press', 'price', 'pride', 'prime', 'print', 'prior', 'prize', 'proof', 'proud', 'prove', 'queen', 'quick', 'quiet', 'quite', 'radio', 'raise', 'range', 'rapid', 'ratio', 'reach', 'ready', 'refer', 'right', 'rival', 'river', 'robin', 'roger', 'roman', 'rough', 'round', 'route', 'royal', 'rural', 'scale', 'scene', 'scope', 'score', 'sense', 'serve', 'seven', 'shall', 'shape', 'share', 'sharp', 'sheet', 'shelf', 'shell', 'shift', 'shirt', 'shock', 'shoot', 'short', 'shown', 'sight', 'since', 'sixth', 'sixty', 'sized', 'skill', 'sleep', 'slide', 'small', 'smart', 'smile', 'smith', 'smoke', 'solid', 'solve', 'sorry', 'sound', 'south', 'space', 'spare', 'speak', 'speed', 'spend', 'spent', 'split', 'spoke', 'sport', 'staff', 'stage', 'stake', 'stand', 'start', 'state', 'steam', 'steel', 'stick', 'still', 'stock', 'stone', 'stood', 'store', 'storm', 'story', 'strip', 'stuck', 'study', 'stuff', 'style', 'sugar', 'suite', 'super', 'sweet', 'table', 'taken', 'taste', 'taxes', 'teach', 'teeth', 'terry', 'texas', 'thank', 'theft', 'their', 'theme', 'there', 'these', 'thick', 'thing', 'think', 'third', 'those', 'three', 'threw', 'throw', 'tight', 'times', 'tired', 'title', 'today', 'topic', 'total', 'touch', 'tough', 'tower', 'track', 'trade', 'train', 'treat', 'trend', 'trial', 'tried', 'tries', 'truck', 'truly', 'trust', 'truth', 'twice', 'under', 'undue', 'union', 'unity', 'until', 'upper', 'upset', 'urban', 'usage', 'usual', 'valid', 'value', 'video', 'virus', 'visit', 'vital', 'voice', 'waste', 'watch', 'water', 'wheel', 'where', 'which', 'while', 'white', 'whole', 'whose', 'woman', 'women', 'world', 'worry', 'worse', 'worst', 'worth', 'would', 'wound', 'write', 'wrong', 'wrote', 'yield', 'young', 'youth'];
+var i = data.length;
+var plays = 0;
+var arrlog = [];
+async function getWord() {
+    // // const response = await fetch("http://localhost:5001");
+    // const data = await response.json();
+    let len = Math.random() * (i);
+    len = parseInt(len);
+    // const word = data[i]['word'];
+    let word = data[len];
+    arrlog.push(word);
+    clearform(attempt1);
+    clearform(attempt2);
+    clearform(attempt3);
+    clearform(attempt4);
+    clearform(attempt5);
+    enableform(attempt1);
+    disableform(attempt2);
+    disableform(attempt3);
+    disableform(attempt4);
+    disableform(attempt5);
+    attempt1.addEventListener('submit', e => {
+        e.preventDefault();
+        let res=checkword(attempt1,arrlog[plays]);
+        if(res==0){
+            enableform(attempt2);
+        }else{
+            points+=(5/(plays+1));
+            level = Math.floor(Math.log2(points+1));
+
+        }
+        document.getElementById("points").innerHTML = Math.ceil(points);
+        document.getElementById("level").innerHTML = level;
+        document.getElementById("stars").innerHTML = Math.floor(Math.log2(level+1));
+    });
+    attempt2.addEventListener('submit', e => {
+        e.preventDefault();
+        let res=checkword(attempt2, arrlog[plays]);
+        if(res==0){
+            enableform(attempt3);
+        }else{
+            points+=(4/(plays+1));
+            level = Math.floor(Math.log2(points+1));
+        }
+        document.getElementById("points").innerHTML = Math.ceil(points);
+        document.getElementById("level").innerHTML = level;
+        document.getElementById("stars").innerHTML = Math.floor(Math.log2(level+1));
+    });
+    attempt3.addEventListener('submit', e => {
+        e.preventDefault();
+        let res=checkword(attempt3, arrlog[plays]);
+        if(res==0){
+            enableform(attempt4);
+        }else{
+            points+=(3/(plays+1));
+            level = Math.floor(Math.log2(points+1));
+        }
+        document.getElementById("points").innerHTML = Math.ceil(points);
+        document.getElementById("level").innerHTML = level;
+        document.getElementById("stars").innerHTML = Math.floor(Math.log2(level+1));
+    });
+    attempt4.addEventListener('submit', e => {
+        e.preventDefault();
+        let res=checkword(attempt4, arrlog[plays]);
+        if(res==0){
+            enableform(attempt5);
+        }else{
+            points+=(2/(plays+1));
+            level = Math.floor(Math.log2(points+1));
+        }
+        document.getElementById("points").innerHTML = Math.ceil(points);
+        document.getElementById("level").innerHTML = level;
+        document.getElementById("stars").innerHTML = Math.floor(Math.log2(level+1));
+    });
+    attempt5.addEventListener('submit', e => {
+        e.preventDefault();
+        let res = checkword(attempt5, arrlog[plays]);
+        if(res==0){
+            document.getElementById("message").innerHTML="You Lost :( the word is "+word;
+        }else{
+            points+=(1/(plays+1));
+            level = Math.floor(Math.log2(points+1));
+        }
+        document.getElementById("points").innerHTML = Math.ceil(points);
+        document.getElementById("level").innerHTML = level;
+        document.getElementById("stars").innerHTML = Math.floor(Math.log2(level+1));
+        button.disabled = false;
+    });
+}
+getWord();
+button.addEventListener("click", e =>{
+    e.preventDefault();
+    plays+=1;
+    button.disabled = true;
+    document.getElementById("message").innerHTML = "";
+    getWord();
+});
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("my-btn");
+var abtbtn = document.getElementById("about");
+var abtmodal = document.getElementById("aboutmodal");
+var span = document.getElementsByClassName("close")[0];
+btn.onclick = function() {
+    modal.style.display = "block";
+  }
+abtbtn.onclick = function() {
+    abtmodal.style.display = "block";
+}
+span.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+if (event.target == modal) {
+    modal.style.display = "none";
+}
+if (event.target == abtmodal){
+    abtmodal.style.display = "none";
+}
+  }
+   </script>
 </html>
